@@ -141,7 +141,7 @@ void send_Lose(int sock, Container &container){
 		mvprintw(30, 50, "%d!!!!!!!!!!!!", container.getOppLose());
 	}
 
-	
+
 	delete[] score;
 
 }
@@ -157,7 +157,7 @@ int send_receive(int sock, Container &container){
 	send(sock, score, 12, 0);
 	recv(sock, container.getOppScore(), 12, 0);
 
-	
+
 	delete[] score;
 
 	return container.getOppLose();
@@ -238,3 +238,23 @@ void paint_next(int next){
 	}
 }
 
+void end_game(bool bool_win){
+	bool go_on = true;
+	int c;
+	while( go_on ){ 
+		while( (c = getch()) == ERR && go_on){
+			if(bool_win){
+				mvprintw(30, 60, "YOU WIN");
+			}
+			else{
+				mvprintw(30, 60, "YOU LOSE");
+			}
+
+		}
+		if( c == 'q'){
+			go_on = false;
+		}
+	}
+
+
+}

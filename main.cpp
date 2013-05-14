@@ -34,42 +34,59 @@ int main(){
 	bool bool_win = false;
 	int mysock;
 	int inputsock;
+	WINDOW *win;
 	Act act = single;
 	/*	WINDOW *my_menu_win;
 		MENU *my_menu;
 		ITEM **my_items;
+
+		printf("Choose a mode to play\n");
+		printf("1. Create an online game\n");
+		printf("2. Join an online game\n");
+		printf( "3. Play sigle mode\n");
+		cin >> c;
 	 */
-	printf("Choose a mode to play\n");
-	printf("1. Create an online game\n");
-	printf("2. Join an online game\n");
-	printf( "3. Play sigle mode\n");
-	cin >> c;
-	switch(c){
-		case 1:
-			act = server;
-			socket_set(mysock, inputsock);
-			srand( time(NULL));
-			break;
-
-		case 2:
-			act = client;
-			socket_set(mysock);
-			srand( time(NULL) + 1);
-			break;
-
-		case 3:
-			srand( time(NULL));
-
-			break;
-		default:	
-		break;
-	}
-
 	initscr();
 	start_color();
 	cbreak(); // disable key buffering
 	keypad(stdscr, TRUE);
 	noecho(); // disable echoing keypad(stdscr, TRUE);
+
+	mvaddstr(1,4,"Choose a mode to play");
+	mvaddstr(3,4,"1.Create an online game");
+	mvaddstr(4,4,"2.Join an online game");
+	mvaddstr(5,4,"3.Play in sinlge mode");
+
+	while(go_on){
+		c = getch();
+		switch(c){
+			case '1':
+				act = server;
+				socket_set(mysock, inputsock);
+				srand( time(NULL));
+				go_on = false;
+				break;
+
+			case '2':
+				act = client;
+				socket_set(mysock);
+				srand( time(NULL) + 5);
+				go_on = false;
+				break;
+
+			case '3':
+				srand( time(NULL));
+				go_on = false;
+
+				break;
+			default:	
+				break;
+		}
+
+	}
+	clear();
+
+	go_on = true;
 	nodelay(stdscr, TRUE);
 	AbstractBlock *ptrBlock;
 	Container container(14, 20);
@@ -136,7 +153,7 @@ int main(){
 					bool_win = true;
 				}
 			}
-			
+
 			time.setTime();
 		}
 		switch(c){
@@ -171,18 +188,10 @@ int main(){
 		send_Lose(inputsock, container);
 	}
 
-	while( (c = getchar() != 'q')){
-		time.displayTime();
-		if(bool_win){
-			mvprintw(30, 60, "YOU WIN");
-		}
-		else{
-			mvprintw(30, 60, "YOU LOSE");
-		}
-			
-	}
+	time.displayTime();
+	end_game(bool_win);
 	endwin();
-	cout << "YOU LOSE" << endl;
+
 	close(mysock);
 	close(inputsock);
 	return 0;

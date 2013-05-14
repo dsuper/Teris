@@ -36,4 +36,6 @@ void send_Lose(int sock, Container &container);
 void paint_next(int);
 
 void paint();
+
+void end_game(bool bool_win);
 #endif
