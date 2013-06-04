@@ -9,7 +9,7 @@ class IBlock : public AbstractBlock{
 	public:
 		IBlock();
 		IBlock(Container&, Act);
-		Poisition down();
+		virtual Poisition down();
 		Poisition right();
 		Poisition left();
 		Poisition rotate();
